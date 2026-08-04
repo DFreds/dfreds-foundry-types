@@ -65,7 +65,10 @@ export interface ActiveEffectMetadata extends DocumentMetadata {
 type ActiveEffectSchema = {
     _id: fields.DocumentIdField;
     name: fields.StringField<string, string, true, false, false>;
-    system: fields.TypeDataField;
+    system: fields.TypeDataField<
+        fields.SourceFromSchema<ActiveEffectSystemSchema>,
+        fields.ModelPropsFromSchema<ActiveEffectSystemSchema>
+    >;
     type: fields.StringField<string, string, false, true, true>;
     disabled: fields.BooleanField;
     start: fields.SchemaField<EffectStartSchema, EffectStartSource, EffectStartData, true, true, true>;
@@ -81,9 +84,18 @@ type ActiveEffectSchema = {
     _stats: fields.DocumentStatsField;
 };
 
+/**
+ * The schema of `ActiveEffectTypeDataModel`, which is where Foundry keeps effect
+ * changes. A system may extend the changes field, but must keep `type`, `phase`
+ * and `priority`.
+ */
+type ActiveEffectSystemSchema = {
+    changes: fields.ArrayField<fields.SchemaField<EffectChangeSchema>>;
+};
+
 type EffectChangeSchema = {
     /** The attribute path in the Actor or Item data which the change modifies */
-    key: fields.StringField<string, string, true, false, true>;
+    key: fields.StringField<string, string, true, false, false>;
     type: fields.StringField<string, string, true, false, true>;
     value: fields.AnyField;
     phase: fields.StringField<string, string, true, false, true>;

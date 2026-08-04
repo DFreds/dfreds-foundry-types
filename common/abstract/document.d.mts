@@ -742,6 +742,8 @@ declare global {
     interface DocumentCloneContext extends Omit<DocumentConstructionContext<null>, "parent"> {
         save?: boolean;
         keepId?: boolean;
+        /** Track the clone source */
+        addSource?: boolean;
     }
 
     interface DocumentSourceUpdateContext extends Omit<DatabaseUpdateOperation<null>, "parent"> {

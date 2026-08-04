@@ -82,7 +82,7 @@ type AmbientSoundEffectSchema = {
     /** The type of effect, keyed to CONFIG.soundEffects */
     type: fields.StringField;
     /** The intensity of the effect, from 1 to 10 */
-    intensity: fields.NumberField;
+    intensity: fields.NumberField<number, number, true, false, true>;
 };
 
 export type AmbientSoundSource = fields.SourceFromSchema<AmbientSoundSchema>;

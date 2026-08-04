@@ -3,6 +3,19 @@
 Each version matches the Foundry VTT version its types describe. See the README
 for how the numbering works.
 
+## 14.365.2
+
+Three more corrections, each verified against the Foundry 14.365 source.
+
+- `ActiveEffect`'s `system` field was untyped. Foundry v14 moved effect changes
+  out of the document schema and into `ActiveEffectTypeDataModel`, which pf2e's
+  definitions do not describe, so `system` was a bare object and
+  `system.changes` could not be read. (`0011`)
+- A window header control only allowed a boolean for `visible` and had no
+  `onClick`. Foundry defines it as a context menu entry with extra fields, so it
+  accepts both. (`0013`)
+- `DocumentCloneContext` was missing `addSource`. (`0014`)
+
 ## 14.365.1
 
 Corrections to pf2e's definitions, each verified against the Foundry 14.365

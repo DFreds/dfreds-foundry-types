@@ -1,0 +1,13 @@
+diff --git a/common/abstract/document.d.mts b/common/abstract/document.d.mts
+index e79c49f..742cdd2 100644
+--- a/common/abstract/document.d.mts
++++ b/common/abstract/document.d.mts
+@@ -742,6 +742,8 @@ declare global {
+     interface DocumentCloneContext extends Omit<DocumentConstructionContext<null>, "parent"> {
+         save?: boolean;
+         keepId?: boolean;
++        /** Track the clone source */
++        addSource?: boolean;
+     }
+ 
+     interface DocumentSourceUpdateContext extends Omit<DatabaseUpdateOperation<null>, "parent"> {

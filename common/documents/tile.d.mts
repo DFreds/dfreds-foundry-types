@@ -74,7 +74,7 @@ type TileSchema = {
 
 type TileOcclusionSchema = {
     /** The occlusion modes from CONST.OCCLUSION_MODES */
-    modes: fields.SetField<fields.NumberField<TileOcclusionMode, TileOcclusionMode, true, false, false>>;
+    modes: fields.SetField<fields.NumberField<TileOcclusionMode, TileOcclusionMode, false, false, false>>;
     /** The occlusion alpha between 0 and 1 */
     alpha: fields.AlphaField;
 };

@@ -402,8 +402,14 @@ export default class Token<TDocument extends TokenDocument = TokenDocument> exte
     /** Draw a status effect icon */
     protected _drawEffect(src: string, tint: ColorSource | null): Promise<PIXI.Sprite | void>;
 
-    /** Draw the overlay effect icon */
-    protected _drawOverlay(src: string, tint: Color | number | null): Promise<PIXI.Sprite>;
+    /**
+     * Draw the overlay effect icon
+     *
+     * Foundry documents `tint` as `number|null`, but that is wrong: it passes an
+     * ActiveEffect's `tint`, which a ColorField turns into a Color. The sibling
+     * `_drawEffect` takes the same value and is documented as `ColorSource|null`.
+     */
+    protected _drawOverlay(src: string, tint: Color | ColorSource | null): Promise<PIXI.Sprite>;
 
     /** Refresh the display of status effects, adjusting their position for the token width and height. */
     protected _refreshEffects(): void;

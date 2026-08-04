@@ -1,5 +1,7 @@
 import { DataField } from "../../common/data/fields.mjs";
 import FormDataExtended from "./ux/form-data-extended.mjs";
+import { ContextMenuCallback, ContextMenuEntry } from "./ux/context-menu.mjs";
+import { DocumentOwnershipLevel } from "../../common/constants.mjs";
 
 export interface ApplicationConfiguration {
     /** An HTML element identifier used for this Application instance */
@@ -104,15 +106,24 @@ interface ApplicationTabsConfiguration {
  * @property {string} [labelPrefix]
  */
 
-export interface ApplicationHeaderControlsEntry {
-    /** A font-awesome icon class which denotes the control button */
-    icon: string;
-    /** The text label for the control button */
-    label: string;
+/**
+ * Foundry defines this as `ContextMenuEntry & _ApplicationHeaderControlsEntry`, so a
+ * header control also accepts everything a context menu entry does -- notably
+ * `onClick`, and a function rather than a boolean for `visible`.
+ */
+export interface ApplicationHeaderControlsEntry extends Omit<ContextMenuEntry, "onClick"> {
     /** The action name triggered by clicking the control button */
     action: string;
-    /** Is the control button visible for the current client? */
-    visible: boolean;
+    /**
+     * The function to call when the control is clicked. Optional, because a control
+     * is normally dispatched by its `action` instead.
+     */
+    onClick?: ContextMenuCallback;
+    /**
+     * A key or value in CONST.DOCUMENT_OWNERSHIP_LEVELS restricting visibility of this
+     * option for the current user. Only applies to DocumentSheetV2 instances.
+     */
+    ownership?: DocumentOwnershipLevel;
 }
 
 export interface ApplicationConstructorParams {
