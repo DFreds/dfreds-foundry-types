@@ -1,0 +1,9 @@
+{
+    "$comment": "Optional convenience for consumers. Extending this supplies the @client/* and @common/* aliases without hardcoding a node_modules path. Paths declared here resolve relative to this file, so they point inside the installed package. If your tsconfig declares its own `paths`, that replaces this block entirely -- in that case, point the aliases at ./node_modules/@dfreds/foundry-types/{client,common}/* yourself.",
+    "compilerOptions": {
+        "paths": {
+            "@client/*": ["./client/*"],
+            "@common/*": ["./common/*"]
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es2024",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "lib": ["ES2024", "DOM", "DOM.Iterable"],
+        "noEmit": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "allowImportingTsExtensions": true,
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "allowUnusedLabels": false,
+        "resolveJsonModule": true,
+        "noErrorTruncation": true,
+        "types": ["node"],
+        "typeRoots": ["./node_modules/@types"]
+    },
+    "include": ["./build/**/*"]
+}

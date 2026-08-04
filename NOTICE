@@ -1,0 +1,26 @@
+@dfreds/foundry-types
+
+This package redistributes the Foundry VTT client type definitions maintained
+by the Pathfinder Second Edition (pf2e) system for Foundry VTT.
+
+    Copyright the pf2e system developers
+    https://github.com/foundryvtt/pf2e
+
+The original work is licensed under the Apache License, Version 2.0. A copy of
+that license is included in this distribution as LICENSE. This package is
+distributed under the same license.
+
+Modifications made to the original work:
+
+  - The contents of `types/foundry/` in the pf2e repository were relocated to
+    the root of this package. `client/`, `common/`, `global-external.d.mts` and
+    `util.d.mts` are otherwise copied verbatim.
+  - pf2e's `types/foundry/package.json` and `types/foundry/tsconfig.json` were
+    not copied. This package supplies its own.
+  - An `index.d.mts` entry point was added so the type definitions can be
+    referenced as an npm package.
+  - Any files under `patches/` in this package's source repository are applied
+    on top of the copied definitions. Each patch records what it changes.
+
+The pf2e system developers are not affiliated with this package and do not
+support it. Report problems to https://github.com/DFreds/dfreds-foundry-types.

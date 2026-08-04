@@ -1,0 +1,31 @@
+{
+    "$comment": "Type-checks the shipped tree. Mirrors pf2e's own types/foundry/tsconfig.json, with typeRoots pointed at this package's node_modules and all four non-declaration .mts files included (pf2e's config omits primary-occludable-object.mts). skipLibCheck is deliberately false -- consumers set it true, so this is the only place these files get checked.",
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "strict": true,
+        "skipLibCheck": false,
+        "noImplicitOverride": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "paths": {
+            "@common/*": ["./common/*"],
+            "@client/*": ["./client/*"]
+        },
+        "types": ["jquery"],
+        "typeRoots": ["./node_modules/@types"]
+    },
+    "include": [
+        "common/**/*.d.mts",
+        "client/**/*.d.mts",
+        "global-external.d.mts",
+        "util.d.mts",
+        "index.d.mts",
+        "client/applications/sheets/token/mixin.mts",
+        "client/canvas/groups/canvas-group-mixin.mts",
+        "client/canvas/primary/primary-occludable-object.mts",
+        "client/packages/client-package.mts"
+    ]
+}
