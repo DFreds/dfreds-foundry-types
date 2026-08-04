@@ -14,13 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No registry-url: it writes an .npmrc auth line that, with no token set,
+      # leaves an empty credential npm uses instead of asking GitHub for one.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
 
       # Trusted publishing needs npm 11.5.1 or newer.
       - run: npm install -g npm@latest
+
+      - run: npm --version
 
       - run: npm ci
 
