@@ -77,7 +77,6 @@ export type AdventurePostImportCallback = (
 export interface ActiveEffectChangeData<
     TEffect extends ActiveEffect<any> = ActiveEffect<any>,
 > extends EffectChangeData {
-    key?: string;
     effect?: TEffect;
     priority: number;
 }

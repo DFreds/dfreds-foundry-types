@@ -89,7 +89,7 @@ export default class SceneControls extends HandlebarsApplicationMixin(
     static override PARTS: Record<string, HandlebarsTemplatePart>;
 
     /** Prepared data of available controls. */
-    get controls(): Record<ControlsKey, SceneControl> & Record<string, SceneControl | undefined>;
+    get controls(): Record<ControlsKey, SceneControl> & Record<string, SceneControl>;
 
     /** The currently active control layer. */
     get control(): SceneControl | null;

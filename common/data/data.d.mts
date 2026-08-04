@@ -51,6 +51,10 @@ export interface LightData<TParent extends DataModel | null>
 export type LightSource = fields.SourceFromSchema<LightDataSchema>;
 
 export type LightDataSchema = {
+    /** Is this a negative light source that subtracts light rather than adding it? */
+    negative: fields.BooleanField;
+    /** The rendering priority of this light relative to others */
+    priority: fields.NumberField<number, number, true, false, true>;
     /** An opacity for the emitted light, if any */
     alpha: fields.AlphaField;
     /** The angle of emission for this point source */

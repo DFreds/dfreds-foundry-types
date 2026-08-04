@@ -25,6 +25,8 @@ interface AmbientLightMetadata extends DocumentMetadata {
 export type AmbientLightSchema = {
     /** The _id which uniquely identifies this BaseAmbientLight embedded document */
     _id: fields.DocumentIdField;
+    /** The name used to describe the light */
+    name: fields.StringField;
     /** The x-coordinate position of the origin of the light */
     x: fields.NumberField<number, number, true, false, true>;
     /** The y-coordinate position of the origin of the light */

@@ -37,6 +37,8 @@ interface TileMetadata extends DocumentMetadata {
 type TileSchema = {
     /** The _id which uniquely identifies this Tile embedded document */
     _id: fields.DocumentIdField;
+    /** The name used to describe the tile */
+    name: fields.StringField;
     /** An image or video texture which this tile displays. */
     texture: TextureData;
     /** The pixel width of the tile */
@@ -47,6 +49,8 @@ type TileSchema = {
     x: fields.NumberField<number, number, true, false, true>;
     /** The y-coordinate position of the top-left corner of the tile */
     y: fields.NumberField<number, number, true, false, true>;
+    /** The elevation of the tile */
+    elevation: fields.NumberField<number, number, true, false, true>;
     /** The z-index ordering of this tile relative to its siblings */
     z: fields.NumberField<number, number, true, false, true>;
     /** The angle of rotation for the tile between 0 and 360 */
@@ -69,12 +73,10 @@ type TileSchema = {
 };
 
 type TileOcclusionSchema = {
-    /** The occlusion mode from CONST.TILE_OCCLUSION_MODES */
-    mode: fields.NumberField<TileOcclusionMode, TileOcclusionMode, false, true, true>;
+    /** The occlusion modes from CONST.OCCLUSION_MODES */
+    modes: fields.SetField<fields.NumberField<TileOcclusionMode, TileOcclusionMode, true, false, false>>;
     /** The occlusion alpha between 0 and 1 */
     alpha: fields.AlphaField;
-    /** An optional radius of occlusion used for RADIAL mode */
-    radius: fields.NumberField;
 };
 
 type TileVideoSchema = {

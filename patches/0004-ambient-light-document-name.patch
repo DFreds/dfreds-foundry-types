@@ -1,0 +1,13 @@
+diff --git a/common/documents/ambient-light.d.mts b/common/documents/ambient-light.d.mts
+index 6cab4ab..4c090cf 100644
+--- a/common/documents/ambient-light.d.mts
++++ b/common/documents/ambient-light.d.mts
+@@ -25,6 +25,8 @@ interface AmbientLightMetadata extends DocumentMetadata {
+ export type AmbientLightSchema = {
+     /** The _id which uniquely identifies this BaseAmbientLight embedded document */
+     _id: fields.DocumentIdField;
++    /** The name used to describe the light */
++    name: fields.StringField;
+     /** The x-coordinate position of the origin of the light */
+     x: fields.NumberField<number, number, true, false, true>;
+     /** The y-coordinate position of the origin of the light */

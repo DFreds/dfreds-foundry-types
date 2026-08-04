@@ -82,6 +82,8 @@ type ActiveEffectSchema = {
 };
 
 type EffectChangeSchema = {
+    /** The attribute path in the Actor or Item data which the change modifies */
+    key: fields.StringField<string, string, true, false, true>;
     type: fields.StringField<string, string, true, false, true>;
     value: fields.AnyField;
     phase: fields.StringField<string, string, true, false, true>;

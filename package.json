@@ -1,6 +1,6 @@
 {
     "name": "@dfreds/foundry-types",
-    "version": "14.365.0",
+    "version": "14.365.1",
     "description": "Type definitions for the Foundry VTT client, versioned to match Foundry itself",
     "type": "module",
     "types": "./index.d.mts",

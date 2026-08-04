@@ -56,6 +56,8 @@ interface DrawingMetadata extends abstract.DocumentMetadata {
 type DrawingSchema = {
     /** The _id which uniquely identifies this BaseDrawing embedded document */
     _id: fields.DocumentIdField;
+    /** The name used to describe the drawing */
+    name: fields.StringField;
     /** The _id of the user who created the drawing */
     author: fields.ForeignDocumentField<BaseUser, true, false, true>;
     /** The geometric shape of the drawing */

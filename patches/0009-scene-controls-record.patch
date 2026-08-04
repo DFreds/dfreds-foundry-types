@@ -1,0 +1,13 @@
+diff --git a/client/applications/ui/scene-controls.d.mts b/client/applications/ui/scene-controls.d.mts
+index fd0155d..6409873 100644
+--- a/client/applications/ui/scene-controls.d.mts
++++ b/client/applications/ui/scene-controls.d.mts
+@@ -89,7 +89,7 @@ export default class SceneControls extends HandlebarsApplicationMixin(
+     static override PARTS: Record<string, HandlebarsTemplatePart>;
+ 
+     /** Prepared data of available controls. */
+-    get controls(): Record<ControlsKey, SceneControl> & Record<string, SceneControl | undefined>;
++    get controls(): Record<ControlsKey, SceneControl> & Record<string, SceneControl>;
+ 
+     /** The currently active control layer. */
+     get control(): SceneControl | null;

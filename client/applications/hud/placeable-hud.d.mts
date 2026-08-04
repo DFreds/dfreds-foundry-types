@@ -30,6 +30,9 @@ export default abstract class BasePlaceableHUD extends ApplicationV2<
     /** Convenience access for the canvas layer which this HUD modifies */
     get layer(): PlaceablesLayer;
 
+    /** The palette that is currently expanded, if any. */
+    get activePalette(): string | null;
+
     /* -------------------------------------------- */
     /*  Rendering                                   */
     /* -------------------------------------------- */
@@ -58,6 +61,13 @@ export default abstract class BasePlaceableHUD extends ApplicationV2<
      * @param object A PlaceableObject instance to which the HUD should be bound
      */
     bind(object: PlaceableObject): Promise<void>;
+
+    /**
+     * Toggle the expanded state of the given palette.
+     * @param palette The palette to toggle, or null to collapse the currently expanded palette
+     * @param active  Force the palette to be active or inactive
+     */
+    togglePalette(palette: string | null, active?: boolean): void;
 
     /* -------------------------------------------- */
     /*  Event Listeners and Handlers                */

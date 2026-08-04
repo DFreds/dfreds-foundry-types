@@ -35,6 +35,7 @@ import {
     AbstractWeatherShader,
     AdaptiveBackgroundShader,
     AdaptiveColorationShader,
+    AdaptiveDarknessShader,
     AdaptiveIlluminationShader,
     GridShader,
     WeatherShaderEffect,
@@ -87,6 +88,15 @@ export interface LightSourceAnimationConfig {
     backgroundShader?: typeof AdaptiveBackgroundShader;
     illuminationShader?: typeof AdaptiveIlluminationShader;
     colorationShader: typeof AdaptiveColorationShader;
+}
+
+/**
+ * A darkness source animation configuration object.
+ */
+export interface DarknessSourceAnimationConfig {
+    label: string;
+    animation: Function;
+    darknessShader?: typeof AdaptiveDarknessShader;
 }
 
 /**
@@ -262,6 +272,7 @@ export default interface Config<
     Folder: {
         documentClass: typeof documents.Folder;
         collection: typeof collections.Folders;
+        sidebarIcon: string;
     };
 
     /** Configuration for the ChatMessage document */
@@ -609,6 +620,7 @@ export default interface Config<
 
         objectBorderThickness: number;
         lightAnimations: Record<string, LightSourceAnimationConfig>;
+        darknessAnimations: Record<string, DarknessSourceAnimationConfig>;
 
         pings: {
             types: {
@@ -682,6 +694,9 @@ export default interface Config<
 
     /** Available Weather Effects implemntations */
     weatherEffects: Record<string, WeatherAmbienceConfiguration>;
+
+    /** Sound effects which can be applied to Sound instances */
+    soundEffects: Record<string, { label: string; effectClass: ConstructorOf<AudioNode> }>;
 
     /** Configuration for dice rolling behaviors in the Foundry VTT client */
     Dice: {

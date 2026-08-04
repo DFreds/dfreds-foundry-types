@@ -1,0 +1,34 @@
+diff --git a/client/applications/sidebar/sidebar.d.mts b/client/applications/sidebar/sidebar.d.mts
+index 1b7f7c0..2f5b14f 100644
+--- a/client/applications/sidebar/sidebar.d.mts
++++ b/client/applications/sidebar/sidebar.d.mts
+@@ -8,21 +8,26 @@ import AbstractSidebarTab from "./sidebar-tab.mjs";
+ 
+ declare interface SidebarTabDescriptor {
+     /** The tab's tooltip. */
+-    tooltip: string;
++    tooltip?: string;
+     /** The tab's Font Awesome icon class. */
+-    icon: string;
++    icon?: string;
++    /** A Document name to retrieve tooltip and icon information from automatically. */
++    documentName?: string;
++    /** Whether the tab is only rendered for GM users. */
++    gmOnly?: boolean;
+ }
+ 
+ /**
+  * The main sidebar application.
+  */
++// @ts-expect-error TS2417 - Foundry reuses the static name TABS for an unrelated shape
+ export default class Sidebar extends HandlebarsApplicationMixin(ApplicationV2) {
+     static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration>;
+ 
+     /**
+      * Tab configuration.
+      */
+-    TABS: Record<string, SidebarTabDescriptor>;
++    static override TABS: Record<string, SidebarTabDescriptor>;
+ 
+     override tabGroups: { primary: string };
+ 

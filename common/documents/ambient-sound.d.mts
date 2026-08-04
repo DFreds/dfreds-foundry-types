@@ -39,10 +39,14 @@ interface AmbientSoundMetadata extends DocumentMetadata {
 type AmbientSoundSchema = {
     /** The _id which uniquely identifies this AmbientSound document */
     _id: fields.DocumentIdField;
+    /** The name used to describe the sound */
+    name: fields.StringField;
     /** The x-coordinate position of the origin of the sound. */
     x: fields.NumberField<number, number, true, false, true>;
     /** The y-coordinate position of the origin of the sound. */
     y: fields.NumberField<number, number, true, false, true>;
+    /** The elevation of the sound */
+    elevation: fields.NumberField<number, number, true, false, true>;
     /** The radius of the emitted sound. */
     radius: fields.NumberField<number, number, true, false, true>;
     /** The audio file path that is played by this sound */
@@ -65,8 +69,20 @@ type AmbientSoundSchema = {
         min: fields.AlphaField;
         max: fields.AlphaField;
     }>;
-    /** A darkness range (min and max) for which the source should be active */
+    /** Audio effects applied to the sound */
+    effects: fields.SchemaField<{
+        base: fields.SchemaField<AmbientSoundEffectSchema>;
+        muffled: fields.SchemaField<AmbientSoundEffectSchema>;
+    }>;
+    /** An object of optional key/value flags */
     flags: fields.DocumentFlagsField;
+};
+
+type AmbientSoundEffectSchema = {
+    /** The type of effect, keyed to CONFIG.soundEffects */
+    type: fields.StringField;
+    /** The intensity of the effect, from 1 to 10 */
+    intensity: fields.NumberField;
 };
 
 export type AmbientSoundSource = fields.SourceFromSchema<AmbientSoundSchema>;
