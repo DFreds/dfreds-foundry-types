@@ -212,6 +212,34 @@ function writeChangelogEntry(version: string, commit: string): void {
     fs.writeFileSync(changelogPath, existing.slice(0, insertAt) + entry + existing.slice(insertAt), "utf-8");
 }
 
+/** Which of the things that actually ship changed during this sync. */
+function describeChanges(
+    pkg: Record<string, unknown>,
+    previousDependencies: unknown,
+    foundryVersion: string,
+): string[] {
+    const reasons: string[] = [];
+
+    const touched = execFileSync("git", ["status", "--porcelain", "--", ...SYNCED_ENTRIES], {
+        cwd: packageRoot,
+        encoding: "utf-8",
+    }).trim();
+    if (touched) {
+        const count = touched.split("\n").length;
+        reasons.push(`${count} type ${count === 1 ? "file" : "files"} changed`);
+    }
+
+    if (JSON.stringify(pkg.dependencies) !== JSON.stringify(previousDependencies)) {
+        reasons.push("dependencies changed");
+    }
+
+    if (pkg.foundryVersion !== foundryVersion) {
+        reasons.push(`Foundry version moved to ${foundryVersion}`);
+    }
+
+    return reasons;
+}
+
 assertCleanCheckout();
 updatePf2e();
 
@@ -223,17 +251,29 @@ applyPatches();
 
 const packageJsonPath = path.resolve(packageRoot, "package.json");
 const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as Record<string, unknown>;
+const previousDependencies = pkg.dependencies;
+const previousVersion = pkg.version as string;
 
 syncDependencies(pkg);
 
-const version = resolveVersion(pkg.version as string);
+const version = resolveVersion(previousVersion);
+const foundryVersion = version.split(".").slice(0, 2).join(".");
+const reasons = describeChanges(pkg, previousDependencies, foundryVersion);
+
+if (reasons.length === 0) {
+    // Nothing that ships is different, so a new version would publish an identical package.
+    console.log(`\nNothing changed. Still at ${previousVersion} (Foundry ${pkg.foundryVersion}).`);
+    process.exit(0);
+}
+
 pkg.version = version;
-pkg.foundryVersion = version.split(".").slice(0, 2).join(".");
+pkg.foundryVersion = foundryVersion;
 pkg.pf2eCommit = commit;
 
 fs.writeFileSync(packageJsonPath, `${JSON.stringify(pkg, null, 4)}\n`, "utf-8");
 
 writeChangelogEntry(version, commit);
 
-console.log(`\nVersion is now ${version} (Foundry ${pkg.foundryVersion})`);
+console.log(`\n${reasons.join("; ")}`);
+console.log(`Version is now ${version} (Foundry ${foundryVersion}), was ${previousVersion}`);
 console.log("Review `git status`, then run `npm install && npm run check`.");
