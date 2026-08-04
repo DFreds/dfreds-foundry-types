@@ -23,14 +23,6 @@ jobs:
       # Trusted publishing needs npm 11.5.1 or newer.
       - run: npm install -g npm@latest
 
-      - name: Check what trusted publishing needs
-        run: |
-          echo "npm version: $(npm --version)   (needs 11.5.1 or newer)"
-          echo "OIDC token URL set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}${ACTIONS_ID_TOKEN_REQUEST_URL:-NO}"
-          echo "registry: $(npm config get registry)"
-          echo "--- npm config (credentials redacted) ---"
-          npm config list
-
       - run: npm ci
 
       - name: Verify the tag matches package.json
