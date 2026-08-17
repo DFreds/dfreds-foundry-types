@@ -3,6 +3,18 @@
 Each version matches the Foundry VTT version its types describe. See the README
 for how the numbering works.
 
+## 14.366.0
+
+Synced from pf2e `v14-dev` at commit `54e70a5288c`, moving from Foundry 14.365 to
+14.366.
+
+One further correction, verified against the Foundry 14.366 source.
+
+- `Canvas` was missing `level`, the Level document currently displayed, and
+  `Level#elevation` did not describe `base`, the floor elevation derived during
+  data preparation. Both are needed to read which scene level is being viewed and
+  what elevation a document placed on it should get. (`0015`)
+
 ## 14.365.2
 
 Three more corrections, each verified against the Foundry 14.365 source.
