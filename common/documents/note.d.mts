@@ -64,6 +64,10 @@ type NoteSchema = {
     x: fields.NumberField<number, number, true, false, true>;
     /** The y-coordinate position of the center of the note icon */
     y: fields.NumberField<number, number, true, false, true>;
+    /** The elevation of the note */
+    elevation: fields.NumberField<number, number, true, false, true>;
+    /** The Levels this note is included in. Empty means every Level. */
+    levels: fields.SceneLevelsSetField;
     /** An image icon used to represent this note */
     texture: data.TextureData;
     /** The pixel size of the map note icon */

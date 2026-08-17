@@ -47,6 +47,8 @@ type AmbientSoundSchema = {
     y: fields.NumberField<number, number, true, false, true>;
     /** The elevation of the sound */
     elevation: fields.NumberField<number, number, true, false, true>;
+    /** The Levels this sound is included in. Empty means every Level. */
+    levels: fields.SceneLevelsSetField;
     /** The radius of the emitted sound. */
     radius: fields.NumberField<number, number, true, false, true>;
     /** The audio file path that is played by this sound */

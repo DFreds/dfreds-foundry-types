@@ -1,0 +1,23 @@
+diff --git a/common/documents/drawing.d.mts b/common/documents/drawing.d.mts
+--- a/common/documents/drawing.d.mts
++++ b/common/documents/drawing.d.mts
+@@ -56,6 +56,8 @@
+ type DrawingSchema = {
+     /** The _id which uniquely identifies this BaseDrawing embedded document */
+     _id: fields.DocumentIdField;
++    /** The name used to describe the drawing */
++    name: fields.StringField;
+     /** The _id of the user who created the drawing */
+     author: fields.ForeignDocumentField<BaseUser, true, false, true>;
+     /** The geometric shape of the drawing */
+@@ -64,6 +66,10 @@
+     x: fields.NumberField<number, number, true, false, true>;
+     /** The y-coordinate position of the top-left corner of the drawn shape */
+     y: fields.NumberField<number, number, true, false, true>;
++    /** The elevation of the drawing */
++    elevation: fields.NumberField<number, number, true, false, true>;
++    /** The Levels this drawing is included in. Empty means every Level. */
++    levels: fields.SceneLevelsSetField;
+     /** The z-index of this drawing relative to other siblings */
+     z: fields.NumberField<number, number, true, false, true>;
+     /** The angle of rotation for the drawing figure */

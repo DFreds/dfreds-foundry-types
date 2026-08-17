@@ -1,8 +1,7 @@
 diff --git a/common/documents/tile.d.mts b/common/documents/tile.d.mts
-index 9cde869..587aac2 100644
 --- a/common/documents/tile.d.mts
 +++ b/common/documents/tile.d.mts
-@@ -37,6 +37,8 @@ interface TileMetadata extends DocumentMetadata {
+@@ -37,6 +37,8 @@
  type TileSchema = {
      /** The _id which uniquely identifies this Tile embedded document */
      _id: fields.DocumentIdField;
@@ -11,16 +10,18 @@ index 9cde869..587aac2 100644
      /** An image or video texture which this tile displays. */
      texture: TextureData;
      /** The pixel width of the tile */
-@@ -47,6 +49,8 @@ type TileSchema = {
+@@ -47,6 +49,10 @@
      x: fields.NumberField<number, number, true, false, true>;
      /** The y-coordinate position of the top-left corner of the tile */
      y: fields.NumberField<number, number, true, false, true>;
 +    /** The elevation of the tile */
 +    elevation: fields.NumberField<number, number, true, false, true>;
++    /** The Levels this tile is included in. Empty means every Level. */
++    levels: fields.SceneLevelsSetField;
      /** The z-index ordering of this tile relative to its siblings */
      z: fields.NumberField<number, number, true, false, true>;
      /** The angle of rotation for the tile between 0 and 360 */
-@@ -69,12 +73,10 @@ type TileSchema = {
+@@ -69,12 +75,10 @@
  };
  
  type TileOcclusionSchema = {

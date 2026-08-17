@@ -51,6 +51,8 @@ type TileSchema = {
     y: fields.NumberField<number, number, true, false, true>;
     /** The elevation of the tile */
     elevation: fields.NumberField<number, number, true, false, true>;
+    /** The Levels this tile is included in. Empty means every Level. */
+    levels: fields.SceneLevelsSetField;
     /** The z-index ordering of this tile relative to its siblings */
     z: fields.NumberField<number, number, true, false, true>;
     /** The angle of rotation for the tile between 0 and 360 */

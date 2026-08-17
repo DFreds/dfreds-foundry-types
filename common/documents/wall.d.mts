@@ -42,6 +42,8 @@ type WallSchema = {
         [number, number, number, number],
         [number, number, number, number]
     >;
+    /** The Levels this wall is included in. Empty means every Level. */
+    levels: fields.SceneLevelsSetField;
     /** The illumination restriction type of this wall */
     light: fields.NumberField<EdgeSenseType, EdgeSenseType, true, true, true>;
     /** The movement restriction type of this wall */

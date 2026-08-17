@@ -1,8 +1,7 @@
 diff --git a/common/documents/ambient-sound.d.mts b/common/documents/ambient-sound.d.mts
-index 27f86e2..70f5b59 100644
 --- a/common/documents/ambient-sound.d.mts
 +++ b/common/documents/ambient-sound.d.mts
-@@ -39,10 +39,14 @@ interface AmbientSoundMetadata extends DocumentMetadata {
+@@ -39,10 +39,16 @@
  type AmbientSoundSchema = {
      /** The _id which uniquely identifies this AmbientSound document */
      _id: fields.DocumentIdField;
@@ -14,10 +13,12 @@ index 27f86e2..70f5b59 100644
      y: fields.NumberField<number, number, true, false, true>;
 +    /** The elevation of the sound */
 +    elevation: fields.NumberField<number, number, true, false, true>;
++    /** The Levels this sound is included in. Empty means every Level. */
++    levels: fields.SceneLevelsSetField;
      /** The radius of the emitted sound. */
      radius: fields.NumberField<number, number, true, false, true>;
      /** The audio file path that is played by this sound */
-@@ -65,8 +69,20 @@ type AmbientSoundSchema = {
+@@ -65,8 +71,20 @@
          min: fields.AlphaField;
          max: fields.AlphaField;
      }>;

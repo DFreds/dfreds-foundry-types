@@ -1,0 +1,26 @@
+diff --git a/common/documents/note.d.mts b/common/documents/note.d.mts
+--- a/common/documents/note.d.mts
++++ b/common/documents/note.d.mts
+@@ -64,6 +64,10 @@
+     x: fields.NumberField<number, number, true, false, true>;
+     /** The y-coordinate position of the center of the note icon */
+     y: fields.NumberField<number, number, true, false, true>;
++    /** The elevation of the note */
++    elevation: fields.NumberField<number, number, true, false, true>;
++    /** The Levels this note is included in. Empty means every Level. */
++    levels: fields.SceneLevelsSetField;
+     /** An image icon used to represent this note */
+     texture: data.TextureData;
+     /** The pixel size of the map note icon */
+diff --git a/common/documents/wall.d.mts b/common/documents/wall.d.mts
+--- a/common/documents/wall.d.mts
++++ b/common/documents/wall.d.mts
+@@ -42,6 +42,8 @@
+         [number, number, number, number],
+         [number, number, number, number]
+     >;
++    /** The Levels this wall is included in. Empty means every Level. */
++    levels: fields.SceneLevelsSetField;
+     /** The illumination restriction type of this wall */
+     light: fields.NumberField<EdgeSenseType, EdgeSenseType, true, true, true>;
+     /** The movement restriction type of this wall */

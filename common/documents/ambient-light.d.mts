@@ -32,6 +32,8 @@ export type AmbientLightSchema = {
     /** The y-coordinate position of the origin of the light */
     y: fields.NumberField<number, number, true, false, true>;
     elevation: fields.NumberField<number, number, true, false, true>;
+    /** The Levels this light is included in. Empty means every Level. */
+    levels: fields.SceneLevelsSetField;
     /** The angle of rotation for the tile between 0 and 360 */
     rotation: fields.AngleField;
     /** Whether or not this light source is constrained by Walls */

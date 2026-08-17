@@ -66,6 +66,10 @@ type DrawingSchema = {
     x: fields.NumberField<number, number, true, false, true>;
     /** The y-coordinate position of the top-left corner of the drawn shape */
     y: fields.NumberField<number, number, true, false, true>;
+    /** The elevation of the drawing */
+    elevation: fields.NumberField<number, number, true, false, true>;
+    /** The Levels this drawing is included in. Empty means every Level. */
+    levels: fields.SceneLevelsSetField;
     /** The z-index of this drawing relative to other siblings */
     z: fields.NumberField<number, number, true, false, true>;
     /** The angle of rotation for the drawing figure */
