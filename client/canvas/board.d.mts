@@ -2,7 +2,7 @@ import { CanvasDimensions } from "@client/_types.mjs";
 import { Point } from "@common/_types.mjs";
 import { CanvasPerformanceMode } from "@common/constants.mjs";
 import { GridlessGrid, HexagonalGrid, SquareGrid } from "@common/grid/_module.mjs";
-import { AmbientLightDocument, RegionDocument, Scene, TokenDocument, User } from "../documents/_module.mjs";
+import { AmbientLightDocument, Level, RegionDocument, Scene, TokenDocument, User } from "../documents/_module.mjs";
 import { CanvasEdges } from "./geometry/edges/edges.mjs";
 import {
     CanvasVisibility,
@@ -185,6 +185,9 @@ export default class Canvas<
 
     /** A reference to the currently displayed Scene document, or null if the Canvas is currently blank. */
     get scene(): TScene | null;
+
+    /** A reference to the currently displayed Level document, or null if the Canvas is currently blank. */
+    get level(): Level | null;
 
     /** A SceneManager instance which adds behaviors to this Scene, or null if there is no manager. */
     get manager(): foundry.canvas.SceneManager | null;
