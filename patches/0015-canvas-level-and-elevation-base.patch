@@ -1,0 +1,43 @@
+diff --git a/client/canvas/board.d.mts b/client/canvas/board.d.mts
+--- a/client/canvas/board.d.mts
++++ b/client/canvas/board.d.mts
+@@ -2,7 +2,7 @@
+ import { Point } from "@common/_types.mjs";
+ import { CanvasPerformanceMode } from "@common/constants.mjs";
+ import { GridlessGrid, HexagonalGrid, SquareGrid } from "@common/grid/_module.mjs";
+-import { AmbientLightDocument, RegionDocument, Scene, TokenDocument, User } from "../documents/_module.mjs";
++import { AmbientLightDocument, Level, RegionDocument, Scene, TokenDocument, User } from "../documents/_module.mjs";
+ import { CanvasEdges } from "./geometry/edges/edges.mjs";
+ import {
+     CanvasVisibility,
+@@ -186,6 +186,9 @@
+     /** A reference to the currently displayed Scene document, or null if the Canvas is currently blank. */
+     get scene(): TScene | null;
+ 
++    /** A reference to the currently displayed Level document, or null if the Canvas is currently blank. */
++    get level(): Level | null;
++
+     /** A SceneManager instance which adds behaviors to this Scene, or null if there is no manager. */
+     get manager(): foundry.canvas.SceneManager | null;
+ 
+diff --git a/client/documents/level.d.mts b/client/documents/level.d.mts
+--- a/client/documents/level.d.mts
++++ b/client/documents/level.d.mts
+@@ -24,6 +24,17 @@
+     index: number;
+ 
+     /**
++     * The elevation range of this Level, as prepared during data preparation: a null `bottom` or
++     * `top` in the source data becomes -Infinity or Infinity respectively.
++     */
++    elevation: {
++        bottom: number;
++        top: number;
++        /** `bottom` if it is finite, otherwise the lesser of `top` and 0. */
++        base: number;
++    };
++
++    /**
+      * Is this level currently viewed?
+      */
+     get isView(): boolean;
