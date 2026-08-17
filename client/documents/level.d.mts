@@ -24,6 +24,17 @@ export default class Level<TParent extends Scene | null = Scene | null> extends 
     index: number;
 
     /**
+     * The elevation range of this Level, as prepared during data preparation: a null `bottom` or
+     * `top` in the source data becomes -Infinity or Infinity respectively.
+     */
+    elevation: {
+        bottom: number;
+        top: number;
+        /** `bottom` if it is finite, otherwise the lesser of `top` and 0. */
+        base: number;
+    };
+
+    /**
      * Is this level currently viewed?
      */
     get isView(): boolean;
