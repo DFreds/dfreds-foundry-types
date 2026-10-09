@@ -21,6 +21,7 @@ const ADDITIONAL_DEPS = [
     "@pixi/graphics-smooth",
     "@pixi/particle-emitter",
     "@types/simple-peer",
+    "gsap",
     "handlebars",
     "js-angusj-clipper",
 ];
