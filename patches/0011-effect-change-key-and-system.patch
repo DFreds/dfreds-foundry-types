@@ -8,12 +8,12 @@ diff --git a/common/documents/active-effect.d.mts b/common/documents/active-effe
 -    system: fields.TypeDataField;
 +    system: fields.TypeDataField<
 +        fields.SourceFromSchema<ActiveEffectSystemSchema>,
-+        fields.ModelPropsFromSchema<ActiveEffectSystemSchema>
++        fields.ModelPropsFromSchema<ActiveEffectSystemSchema> & { schema: fields.DataModelSchemaField }
 +    >;
      type: fields.StringField<string, string, false, true, true>;
      disabled: fields.BooleanField;
      start: fields.SchemaField<EffectStartSchema, EffectStartSource, EffectStartData, true, true, true>;
-@@ -81,7 +84,18 @@
+@@ -81,6 +84,24 @@
      _stats: fields.DocumentStatsField;
  };
  
@@ -26,20 +26,15 @@ diff --git a/common/documents/active-effect.d.mts b/common/documents/active-effe
 +    changes: fields.ArrayField<fields.SchemaField<EffectChangeSchema>>;
 +};
 +
- type EffectChangeSchema = {
++type EffectChangeSchema = {
 +    /** The attribute path in the Actor or Item data which the change modifies */
 +    key: fields.StringField<string, string, true, false, false>;
-     type: fields.StringField<string, string, true, false, true>;
-     value: fields.AnyField;
-     phase: fields.StringField<string, string, true, false, true>;
-diff --git a/client/documents/_types.d.mts b/client/documents/_types.d.mts
---- a/client/documents/_types.d.mts
-+++ b/client/documents/_types.d.mts
-@@ -77,7 +77,6 @@
- export interface ActiveEffectChangeData<
-     TEffect extends ActiveEffect<any> = ActiveEffect<any>,
- > extends EffectChangeData {
--    key?: string;
-     effect?: TEffect;
-     priority: number;
- }
++    type: fields.StringField<string, string, true, false, true>;
++    value: fields.AnyField;
++    phase: fields.StringField<string, string, true, false, true>;
++    priority: fields.NumberField;
++};
++
+ type EffectStartSchema = {
+     combat: fields.ForeignDocumentField<BaseCombat>;
+     combatant: fields.ForeignDocumentField<string>;
