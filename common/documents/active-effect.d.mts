@@ -67,7 +67,7 @@ type ActiveEffectSchema = {
     name: fields.StringField<string, string, true, false, false>;
     system: fields.TypeDataField<
         fields.SourceFromSchema<ActiveEffectSystemSchema>,
-        fields.ModelPropsFromSchema<ActiveEffectSystemSchema>
+        fields.ModelPropsFromSchema<ActiveEffectSystemSchema> & { schema: fields.DataModelSchemaField }
     >;
     type: fields.StringField<string, string, false, true, true>;
     disabled: fields.BooleanField;
@@ -112,7 +112,7 @@ type EffectStartSchema = {
 };
 
 export type EffectStartSource = fields.SourceFromSchema<EffectStartSchema>;
-interface EffectStartData extends fields.ModelPropsFromSchema<EffectStartSchema> {
+export interface EffectStartData extends fields.ModelPropsFromSchema<EffectStartSchema> {
     value: number;
 }
 
@@ -128,6 +128,12 @@ export type EffectDurationData = fields.ModelPropsFromSchema<EffectDurationSchem
 
 export type ActiveEffectSource = fields.SourceFromSchema<ActiveEffectSchema>;
 
-export type EffectChangeData = fields.SourceFromSchema<EffectChangeSchema>;
+export interface EffectChangeData {
+    type: string;
+    key?: string;
+    value?: unknown;
+    phase: string;
+    priority: number | null;
+}
 
 export {};

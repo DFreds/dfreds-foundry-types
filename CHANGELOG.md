@@ -3,6 +3,18 @@
 Each version matches the Foundry VTT version its types describe. See the README
 for how the numbering works.
 
+## 14.369.0
+
+Synced from pf2e `v14-dev` at commit `3d99a25c991`, moving to Foundry 14.369.
+
+- pf2e now types `BasePlaceableHUD#activePalette`, so `0001` only adds
+  `togglePalette`.
+- pf2e rewrote the `ActiveEffect` types. `EffectChangeData` now follows
+  Foundry's own definition, where `key` is optional. `0011` now only types
+  `ActiveEffect#system`, where `key` is required.
+- pf2e now types `Canvas#level`, so `0015` only adds `Level#elevation.base`. It
+  is renamed to `0015-level-elevation-base.patch`.
+
 ## 14.366.1
 
 Synced from pf2e `v14-dev` at commit `64c0e3ae6b8`.

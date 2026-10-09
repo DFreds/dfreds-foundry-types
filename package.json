@@ -1,6 +1,6 @@
 {
     "name": "@dfreds/foundry-types",
-    "version": "14.366.1",
+    "version": "14.369.0",
     "description": "Type definitions for the Foundry VTT client, versioned to match Foundry itself",
     "type": "module",
     "types": "./index.d.mts",
@@ -91,6 +91,6 @@
         "typescript": "^5.9.3",
         "typescript-eslint": "^8.59.1"
     },
-    "foundryVersion": "14.366",
-    "pf2eCommit": "64c0e3ae6b8"
+    "foundryVersion": "14.369",
+    "pf2eCommit": "3d99a25c991"
 }

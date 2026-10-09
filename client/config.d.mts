@@ -1,4 +1,4 @@
-import { DataSchema, Document, TypeDataModel } from "@common/abstract/_module.mjs";
+import { DataSchema, TypeDataModel } from "@common/abstract/_module.mjs";
 import { AudioFilePath, ImageFilePath } from "@common/constants.mjs";
 import { DocumentConstructionContext } from "../common/_types.mjs";
 import { ActiveEffectSource } from "../common/documents/active-effect.mjs";
@@ -48,7 +48,11 @@ import type {
     PointVisionSource,
 } from "./canvas/sources/_module.mjs";
 import ClientDatabaseBackend from "./data/client-backend.mjs";
-import { TokenMovementCostAggregator } from "./documents/_types.mjs";
+import {
+    ActiveEffectChangeHandler,
+    ActiveEffectChangeRenderer,
+    TokenMovementCostAggregator,
+} from "./documents/_types.mjs";
 import WorldCollection from "./documents/abstract/world-collection.mjs";
 import * as collections from "./documents/collections/_module.mjs";
 
@@ -165,6 +169,13 @@ interface GridStyleConfig {
     label: string;
     shaderClass: typeof GridShader;
     shaderOptions: { style: number };
+}
+
+interface ActiveEffectChangeTypeConfig {
+    label: string;
+    defaultPriority: number;
+    handler?: ActiveEffectChangeHandler | null;
+    render?: ActiveEffectChangeRenderer | null;
 }
 
 export default interface Config<
@@ -437,7 +448,7 @@ export default interface Config<
      * Configuration for the JournalEntryPage embedded document type.
      */
     JournalEntryPage: {
-        dataModels: Record<string, ConstructorOf<TypeDataModel<Document, DataSchema>>>;
+        dataModels: Record<string, ConstructorOf<TypeDataModel<documents.JournalEntryPage, DataSchema>>>;
         defaultType: string;
         documentClass: typeof documents.JournalEntryPage;
         sidebarIcon: string;

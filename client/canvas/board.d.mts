@@ -186,9 +186,6 @@ export default class Canvas<
     /** A reference to the currently displayed Scene document, or null if the Canvas is currently blank. */
     get scene(): TScene | null;
 
-    /** A reference to the currently displayed Level document, or null if the Canvas is currently blank. */
-    get level(): Level | null;
-
     /** A SceneManager instance which adds behaviors to this Scene, or null if there is no manager. */
     get manager(): foundry.canvas.SceneManager | null;
 
@@ -197,6 +194,9 @@ export default class Canvas<
 
     /** A reference to the grid of the currently displayed Scene document, or null if the Canvas is currently blank. */
     get grid(): SquareGrid | HexagonalGrid | GridlessGrid;
+
+    /** The level currently being viewed, or null if the canvas is blank. */
+    get level(): Level | null;
 
     /** A flag for whether the game Canvas is ready to be used. False if the canvas is not yet drawn, true otherwise. */
     get ready(): boolean;
