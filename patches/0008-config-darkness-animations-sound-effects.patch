@@ -1,8 +1,7 @@
 diff --git a/client/config.d.mts b/client/config.d.mts
-index c4e5be0..b42d435 100644
 --- a/client/config.d.mts
 +++ b/client/config.d.mts
-@@ -35,6 +35,7 @@ import {
+@@ -35,6 +35,7 @@
      AbstractWeatherShader,
      AdaptiveBackgroundShader,
      AdaptiveColorationShader,
@@ -10,11 +9,10 @@ index c4e5be0..b42d435 100644
      AdaptiveIlluminationShader,
      GridShader,
      WeatherShaderEffect,
-@@ -89,6 +90,15 @@ export interface LightSourceAnimationConfig {
-     colorationShader: typeof AdaptiveColorationShader;
+@@ -94,6 +95,15 @@
  }
  
-+/**
+ /**
 + * A darkness source animation configuration object.
 + */
 +export interface DarknessSourceAnimationConfig {
@@ -23,10 +21,11 @@ index c4e5be0..b42d435 100644
 +    darknessShader?: typeof AdaptiveDarknessShader;
 +}
 +
- /**
++/**
   * Available Weather Effects implementations
   */
-@@ -262,6 +272,7 @@ export default interface Config<
+ interface WeatherAmbienceConfiguration {
+@@ -273,6 +283,7 @@
      Folder: {
          documentClass: typeof documents.Folder;
          collection: typeof collections.Folders;
@@ -34,7 +33,7 @@ index c4e5be0..b42d435 100644
      };
  
      /** Configuration for the ChatMessage document */
-@@ -609,6 +620,7 @@ export default interface Config<
+@@ -620,6 +631,7 @@
  
          objectBorderThickness: number;
          lightAnimations: Record<string, LightSourceAnimationConfig>;
@@ -42,7 +41,7 @@ index c4e5be0..b42d435 100644
  
          pings: {
              types: {
-@@ -683,6 +695,9 @@ export default interface Config<
+@@ -694,6 +706,9 @@
      /** Available Weather Effects implemntations */
      weatherEffects: Record<string, WeatherAmbienceConfiguration>;
  
