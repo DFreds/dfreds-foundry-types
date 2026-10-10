@@ -4,18 +4,11 @@ import fsExtra from "fs-extra";
 import path from "path";
 import { packageRoot, readTypeSource } from "./type-source.ts";
 
-/** Directories and files copied verbatim out of `<pf2e>/types/foundry`. */
 const SYNCED_ENTRIES = ["client", "common", "global-external.d.mts", "util.d.mts"];
 
-/** pf2e ships these as devDependencies of its types; we ship them as real deps. */
-const DEP_EXCLUSIONS = ["typescript"];
+const PEER_DEPENDENCIES = ["typescript"];
 
-/**
- * Packages the type definitions import but that pf2e's `types/foundry/package.json`
- * does not list -- inside pf2e they resolve against the repo root instead. Versions
- * are read from pf2e's root `package.json` so they stay in step with it.
- */
-const ADDITIONAL_DEPS = [
+const DEPS_FROM_PF2E_ROOT = [
     "@pixi/graphics-smooth",
     "@pixi/particle-emitter",
     "@types/simple-peer",
@@ -26,9 +19,9 @@ const ADDITIONAL_DEPS = [
 
 const { pf2eRepoPath, pf2eBranch } = readTypeSource();
 
-const sourceTypesPath = path.resolve(pf2eRepoPath, "types", "foundry");
-if (!fs.lstatSync(sourceTypesPath, { throwIfNoEntry: false })?.isDirectory()) {
-    console.error(`No folder found at ${sourceTypesPath}`);
+const pf2eTypesPath = path.resolve(pf2eRepoPath, "types", "foundry");
+if (!fs.lstatSync(pf2eTypesPath, { throwIfNoEntry: false })?.isDirectory()) {
+    console.error(`No folder found at ${pf2eTypesPath}`);
     process.exit(1);
 }
 
@@ -38,8 +31,7 @@ function git(...args: string[]): string {
     }).trim();
 }
 
-// A dirty pf2e checkout would silently bake local edits into a published package.
-function assertCleanCheckout(): void {
+function assertCleanPf2eCheckout(): void {
     if (git("status", "--porcelain", "--", "types/foundry")) {
         console.error(`${pf2eRepoPath} has uncommitted changes under types/foundry. Commit or stash them first.`);
         process.exit(1);
@@ -72,9 +64,9 @@ function copyTypes(): void {
     for (const entry of SYNCED_ENTRIES) {
         const target = path.resolve(packageRoot, entry);
         fsExtra.removeSync(target);
-        fsExtra.copySync(path.resolve(sourceTypesPath, entry), target);
+        fsExtra.copySync(path.resolve(pf2eTypesPath, entry), target);
     }
-    console.log(`Copied ${SYNCED_ENTRIES.join(", ")} from ${sourceTypesPath}`);
+    console.log(`Copied ${SYNCED_ENTRIES.join(", ")} from ${pf2eTypesPath}`);
 }
 
 function applyPatches(): void {
@@ -97,37 +89,35 @@ function applyPatches(): void {
             });
             console.log(`Applied ${patch}`);
         } catch {
-            // A patch that no longer applies usually means pf2e fixed it upstream.
             console.error(`Failed to apply patches/${patch}. If pf2e has fixed this upstream, delete the patch.`);
             process.exit(1);
         }
     }
 }
 
-/** Mirrors the devDependencies pf2e declares for its own types, minus the toolchain. */
 function syncDependencies(pkg: Record<string, unknown>): void {
-    const sourcePkg = JSON.parse(fs.readFileSync(path.resolve(sourceTypesPath, "package.json"), "utf-8")) as {
+    const pf2eTypesPkg = JSON.parse(fs.readFileSync(path.resolve(pf2eTypesPath, "package.json"), "utf-8")) as {
         devDependencies?: Record<string, string>;
     };
 
-    const rootPkg = JSON.parse(fs.readFileSync(path.resolve(pf2eRepoPath, "package.json"), "utf-8")) as {
+    const pf2eRootPkg = JSON.parse(fs.readFileSync(path.resolve(pf2eRepoPath, "package.json"), "utf-8")) as {
         dependencies?: Record<string, string>;
         devDependencies?: Record<string, string>;
     };
-    const rootDeps = { ...rootPkg.dependencies, ...rootPkg.devDependencies };
+    const pf2eRootDeps = { ...pf2eRootPkg.dependencies, ...pf2eRootPkg.devDependencies };
 
-    const additional = ADDITIONAL_DEPS.map((name) => {
-        const version = rootDeps[name];
+    const depsFromPf2eRoot = DEPS_FROM_PF2E_ROOT.map((name) => {
+        const version = pf2eRootDeps[name];
         if (!version) {
-            console.error(`${name} is no longer in pf2e's package.json. Update ADDITIONAL_DEPS.`);
+            console.error(`${name} is no longer in pf2e's package.json. Update DEPS_FROM_PF2E_ROOT.`);
             process.exit(1);
         }
         return [name, version] as const;
     });
 
     const dependencies = Object.fromEntries(
-        [...Object.entries(sourcePkg.devDependencies ?? {}), ...additional]
-            .filter(([name]) => !DEP_EXCLUSIONS.includes(name))
+        [...Object.entries(pf2eTypesPkg.devDependencies ?? {}), ...depsFromPf2eRoot]
+            .filter(([name]) => !PEER_DEPENDENCIES.includes(name))
             .sort(([a], [b]) => a.localeCompare(b)),
     );
 
@@ -135,12 +125,6 @@ function syncDependencies(pkg: Record<string, unknown>): void {
     console.log(`Synced ${Object.keys(dependencies).length} dependencies from pf2e`);
 }
 
-/**
- * Package versions are `MAJOR.BUILD.PATCH`, where MAJOR.BUILD is the Foundry
- * version the types describe (14.365 -> 14.365.0). PATCH covers type-only fixes
- * against that same Foundry build. Defaults to pf2e's verified compatibility,
- * which lags the live Foundry release -- pass `--foundry 14.365` to override.
- */
 function resolveVersion(currentVersion: string): string {
     const override = readFoundryArg();
     const foundryVersion = override ?? readVerifiedCompatibility();
@@ -193,14 +177,12 @@ function writeChangelogEntry(version: string, commit: string): void {
         "\n",
     );
 
-    // Newest entry goes above the previous one, below the preamble.
-    const firstEntry = existing.indexOf("\n## ");
-    const insertAt = firstEntry === -1 ? existing.length : firstEntry + 1;
+    const newestEntry = existing.indexOf("\n## ");
+    const insertAt = newestEntry === -1 ? existing.length : newestEntry + 1;
 
     fs.writeFileSync(changelogPath, existing.slice(0, insertAt) + entry + existing.slice(insertAt), "utf-8");
 }
 
-/** Which of the things that actually ship changed during this sync. */
 function describeChanges(
     pkg: Record<string, unknown>,
     previousDependencies: unknown,
@@ -226,7 +208,7 @@ function describeChanges(
 }
 
 assertCleanPackage();
-assertCleanCheckout();
+assertCleanPf2eCheckout();
 updatePf2e();
 
 const commit = git("rev-parse", "--short", "HEAD");
@@ -247,7 +229,6 @@ const foundryVersion = version.split(".").slice(0, 2).join(".");
 const reasons = describeChanges(pkg, previousDependencies, foundryVersion);
 
 if (reasons.length === 0) {
-    // Nothing that ships is different, so a new version would publish an identical package.
     console.log(`\nNothing changed. Still at ${previousVersion} (Foundry ${pkg.foundryVersion}).`);
     process.exit(0);
 }
