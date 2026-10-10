@@ -190,18 +190,25 @@ applies every patch on top, so the correction becomes part of the published
 package and every module picks it up. You write the fix once instead of
 seventeen times.
 
-To create one, edit the copied files and save the difference:
+To create one, edit the copied files, then save the difference against pf2e:
 
 ```sh
-git diff -- client common global-external.d.mts util.d.mts > patches/0001-short-description.patch
+npm run make-patch -- 0017-short-description client/config.d.mts [more files...]
 ```
 
-Patches are applied in filename order, so number them.
+Patches are applied in filename order, so number them. Use the same command, with
+the same name, to update an existing patch. It always compares against the pf2e
+clone, so the patch stays correct after the edited files are committed.
+`git diff` does not: once the files are committed, it only shows the newest
+edits.
 
-They also clean up after themselves. Once pf2e corrects the same thing, the
-patch no longer fits the file it was written against, and `npm run sync` stops
-with an error naming it. That error means the patch has done its job and should
-be deleted — so old patches cannot pile up unnoticed.
+They also clean up after themselves. When pf2e changes a patched file, the
+patch no longer fits, and `npm run sync` stops with an error naming it, so old
+patches cannot pile up unnoticed. Compare the patch with the new pf2e file:
+
+- If pf2e now has the fix, delete the patch.
+- If pf2e changed something else nearby, edit the copied file again and run
+  `npm run make-patch` with the patch's name to rebuild it.
 
 ### Best of all, fix it in pf2e
 
