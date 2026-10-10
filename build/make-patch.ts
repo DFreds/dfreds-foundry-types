@@ -27,25 +27,30 @@ const config = JSON.parse(fs.readFileSync(path.resolve(packageRoot, "type-source
 };
 const pristineRoot = path.resolve(config.pf2eRepoPath, "types", "foundry");
 
-const hunks: string[] = [];
-for (const file of files) {
-    const pristine = path.resolve(pristineRoot, file);
-    const current = path.resolve(packageRoot, file);
+const FILES_DIFFER = 1;
 
-    let diff = "";
+function diffAgainstPristine(pristine: string, current: string): string {
     try {
-        // diff exits 1 when files differ, which is the expected case.
-        execFileSync("diff", ["-u", pristine, current], { encoding: "utf-8" });
+        execFileSync("git", ["diff", "--no-index", "--no-color", "--", pristine, current], { encoding: "utf-8" });
+        return "";
     } catch (error) {
-        diff = (error as { stdout?: string }).stdout ?? "";
+        const { status, stdout } = error as { status?: number; stdout?: string };
+        if (status !== FILES_DIFFER || !stdout) throw error;
+        return stdout;
     }
+}
+
+const hunks: string[] = [];
+for (const file of files.map((file) => path.posix.normalize(file.replaceAll("\\", "/")))) {
+    const diff = diffAgainstPristine(path.resolve(pristineRoot, file), path.resolve(packageRoot, file));
 
     if (!diff.trim()) {
         console.log(`${file} is unchanged, skipping`);
         continue;
     }
 
-    const body = diff.split("\n").slice(2).join("\n");
+    const lines = diff.split("\n");
+    const body = lines.slice(lines.findIndex((line) => line.startsWith("@@"))).join("\n");
     hunks.push([`diff --git a/${file} b/${file}`, `--- a/${file}`, `+++ b/${file}`, body].join("\n"));
 }
 
