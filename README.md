@@ -110,6 +110,9 @@ Foundry has moved ahead of pf2e, name the version yourself:
 npm run sync -- --foundry 14.366
 ```
 
+If pf2e's verified version is older than the one in `package.json`, `npm run
+sync` stops and asks for `--foundry`, so a release never goes backwards.
+
 Syncing twice against the same Foundry version bumps the last number instead
 — `14.365.0` becomes `14.365.1` — which is what you want when correcting the
 types rather than following a new Foundry build.

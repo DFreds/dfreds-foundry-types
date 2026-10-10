@@ -173,16 +173,26 @@ function resolveVersion(currentVersion: string): string {
         process.exit(1);
     }
 
-    const [currentMajor, currentBuild, currentPatch] = currentVersion.split(".");
-    if (`${currentMajor}.${currentBuild}` === foundryVersion) {
-        return `${foundryVersion}.${Number(currentPatch) + 1}`;
+    const [currentMajor, currentBuild, currentPatch] = currentVersion.split(".").map(Number);
+    const [major, build] = foundryVersion.split(".").map(Number);
+    const isOlder = major < currentMajor || (major === currentMajor && build < currentBuild);
+
+    if (isOlder) {
+        console.error(
+            `Foundry ${foundryVersion} is older than the current version ${currentVersion}. Pass --foundry ${currentMajor}.${currentBuild} to stay on it.`,
+        );
+        process.exit(1);
+    }
+
+    if (major === currentMajor && build === currentBuild) {
+        return `${foundryVersion}.${currentPatch + 1}`;
     }
     return `${foundryVersion}.0`;
 }
 
 function readFoundryArg(): string | undefined {
     const index = process.argv.indexOf("--foundry");
-    return index === -1 ? undefined : process.argv[index + 1];
+    return index === -1 ? undefined : (process.argv[index + 1] ?? "");
 }
 
 function readVerifiedCompatibility(): string {
