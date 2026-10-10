@@ -12,9 +12,7 @@
 import { execFileSync } from "child_process";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+import { packageRoot, readTypeSource } from "./type-source.ts";
 
 const [name, ...files] = process.argv.slice(2);
 if (!name || files.length === 0) {
@@ -22,10 +20,7 @@ if (!name || files.length === 0) {
     process.exit(1);
 }
 
-const config = JSON.parse(fs.readFileSync(path.resolve(packageRoot, "type-source.json"), "utf-8")) as {
-    pf2eRepoPath: string;
-};
-const pristineRoot = path.resolve(config.pf2eRepoPath, "types", "foundry");
+const pristineRoot = path.resolve(readTypeSource().pf2eRepoPath, "types", "foundry");
 
 const FILES_DIFFER = 1;
 
