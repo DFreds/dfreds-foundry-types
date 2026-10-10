@@ -85,6 +85,22 @@ function assertCleanCheckout(): void {
     }
 }
 
+function changedSyncedEntries(): string {
+    return execFileSync("git", ["status", "--porcelain", "--", ...SYNCED_ENTRIES], {
+        cwd: packageRoot,
+        encoding: "utf-8",
+    }).trim();
+}
+
+function assertCleanPackage(): void {
+    if (changedSyncedEntries()) {
+        console.error(
+            `${packageRoot} has uncommitted changes in ${SYNCED_ENTRIES.join(", ")}, which sync would delete. Commit them, or save them with \`git stash -u -- ${SYNCED_ENTRIES.join(" ")}\`.`,
+        );
+        process.exit(1);
+    }
+}
+
 function updatePf2e(): void {
     console.log(`Updating ${pf2eRepoPath} to ${pf2eBranch}...`);
     git("checkout", pf2eBranch);
@@ -231,10 +247,7 @@ function describeChanges(
 ): string[] {
     const reasons: string[] = [];
 
-    const touched = execFileSync("git", ["status", "--porcelain", "--", ...SYNCED_ENTRIES], {
-        cwd: packageRoot,
-        encoding: "utf-8",
-    }).trim();
+    const touched = changedSyncedEntries();
     if (touched) {
         const count = touched.split("\n").length;
         reasons.push(`${count} type ${count === 1 ? "file" : "files"} changed`);
@@ -251,6 +264,7 @@ function describeChanges(
     return reasons;
 }
 
+assertCleanPackage();
 assertCleanCheckout();
 updatePf2e();
 

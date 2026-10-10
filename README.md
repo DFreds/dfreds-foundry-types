@@ -163,6 +163,10 @@ file.
   already on npm and cannot be replaced. Sync again to get a new version number
   and release that instead.
 - **`npm run sync` stops on a patch.** See "Fixing a type" below.
+- **`npm run sync` stops on uncommitted changes.** Sync replaces `client`,
+  `common`, `global-external.d.mts` and `util.d.mts`, so it will not run while
+  they have uncommitted changes. Commit them, or save them with
+  `git stash -u -- client common global-external.d.mts util.d.mts`.
 
 ## Fixing a type
 
@@ -209,6 +213,8 @@ patches cannot pile up unnoticed. Compare the patch with the new pf2e file:
 - If pf2e now has the fix, delete the patch.
 - If pf2e changed something else nearby, edit the copied file again and run
   `npm run make-patch` with the patch's name to rebuild it.
+
+Then stash the half-synced files, as above, and run `npm run sync` again.
 
 ### Best of all, fix it in pf2e
 
