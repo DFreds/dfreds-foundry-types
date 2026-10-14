@@ -3,6 +3,10 @@
 Each version matches the Foundry VTT version its types describe. See the README
 for how the numbering works.
 
+## 14.369.1
+
+Synced from pf2e `v14-dev` at commit `d1412e4ff05`.
+
 ## 14.369.0
 
 Synced from pf2e `v14-dev` at commit `3d99a25c991`, moving to Foundry 14.369.
