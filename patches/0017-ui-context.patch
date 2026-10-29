@@ -1,0 +1,20 @@
+diff --git a/client/ui.d.mts b/client/ui.d.mts
+--- a/client/ui.d.mts
++++ b/client/ui.d.mts
+@@ -20,6 +20,8 @@ export const combat: applications.sidebar.tabs.CombatTracker;
+ 
+ export const compendium: applications.sidebar.tabs.CompendiumDirectory;
+ 
++export let context: applications.ux.ContextMenu | undefined;
++
+ export const controls: applications.ui.SceneControls;
+ 
+ export const hotbar: applications.ui.Hotbar<Macro>;
+@@ -67,6 +69,7 @@ export interface FoundryUI<
+     chat: TChatLog;
+     combat: TCombatTracker;
+     compendium: TCompendiumDirectory;
++    context?: applications.ux.ContextMenu;
+     controls: applications.ui.SceneControls;
+     hotbar: THotbar;
+     items: TItemDirectory;
