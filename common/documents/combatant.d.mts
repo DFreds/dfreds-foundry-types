@@ -36,6 +36,8 @@ type CombatantSchema = {
     img: fields.FilePathField<ImageFilePath>;
     /** The initiative score for the Combatant which determines its turn order */
     initiative: fields.NumberField;
+    /** The ID of the CombatantGroup to which this Combatant belongs */
+    group: fields.DocumentIdField;
     /** Is this Combatant currently hidden? */
     hidden: fields.BooleanField;
     /** Has this Combatant been defeated? */

@@ -1,0 +1,80 @@
+diff --git a/common/documents/combat.d.mts b/common/documents/combat.d.mts
+--- a/common/documents/combat.d.mts
++++ b/common/documents/combat.d.mts
+@@ -1,6 +1,6 @@
+ import { DatabaseUpdateCallbackOptions, Document, DocumentMetadata, EmbeddedCollection } from "../abstract/_module.mjs";
+ import * as fields from "../data/fields.mjs";
+-import { BaseCombatant, BaseScene, BaseUser } from "./_module.mjs";
++import { BaseCombatant, BaseCombatantGroup, BaseScene, BaseUser } from "./_module.mjs";
+ 
+ /** The Combat document model. */
+ export default class BaseCombat extends Document<null, CombatSchema> {
+@@ -21,6 +21,7 @@ export default class BaseCombat extends Document<null, CombatSchema> {
+ 
+ export default interface BaseCombat extends Document<null, CombatSchema>, fields.ModelPropsFromSchema<CombatSchema> {
+     readonly combatants: EmbeddedCollection<BaseCombatant<this>>;
++    readonly groups: EmbeddedCollection<BaseCombatantGroup<this>>;
+ 
+     get documentName(): CombatMetadata["name"];
+ }
+@@ -31,6 +32,7 @@ interface CombatMetadata extends DocumentMetadata {
+     label: "DOCUMENT.Combat";
+     embedded: {
+         Combatant: "combatants";
++        CombatantGroup: "groups";
+     };
+     isPrimary: true;
+ }
+@@ -42,6 +44,8 @@ type CombatSchema = {
+     scene: fields.ForeignDocumentField<BaseScene>;
+     /** A Collection of Combatant embedded Documents */
+     combatants: fields.EmbeddedCollectionField<BaseCombatant<BaseCombat>>;
++    /** A Collection of CombatantGroup embedded Documents */
++    groups: fields.EmbeddedCollectionField<BaseCombatantGroup<BaseCombat>>;
+     /** Is the Combat encounter currently active? */
+     active: fields.BooleanField;
+     /** The current round of the Combat encounter */
+diff --git a/common/documents/combatant.d.mts b/common/documents/combatant.d.mts
+--- a/common/documents/combatant.d.mts
++++ b/common/documents/combatant.d.mts
+@@ -36,6 +36,8 @@ type CombatantSchema = {
+     img: fields.FilePathField<ImageFilePath>;
+     /** The initiative score for the Combatant which determines its turn order */
+     initiative: fields.NumberField;
++    /** The ID of the CombatantGroup to which this Combatant belongs */
++    group: fields.DocumentIdField;
+     /** Is this Combatant currently hidden? */
+     hidden: fields.BooleanField;
+     /** Has this Combatant been defeated? */
+diff --git a/client/documents/combat.d.mts b/client/documents/combat.d.mts
+--- a/client/documents/combat.d.mts
++++ b/client/documents/combat.d.mts
+@@ -10,7 +10,7 @@ import {
+ import Document from "@common/abstract/document.mjs";
+ import EmbeddedCollection from "@common/abstract/embedded-collection.mjs";
+ import BaseCombat from "@common/documents/combat.mjs";
+-import { Actor, Combatant, TokenDocument, User } from "./_module.mjs";
++import { Actor, Combatant, CombatantGroup, TokenDocument, User } from "./_module.mjs";
+ import { CombatRoundEventContext, CombatTurnEventContext } from "./_types.mjs";
+ import { ClientDocument, ClientDocumentStatic } from "./abstract/client-document.mjs";
+ 
+@@ -379,6 +379,7 @@ export default class Combat extends ClientBaseCombat {
+ 
+ export default interface Combat extends ClientBaseCombat {
+     readonly combatants: EmbeddedCollection<Combatant<this>>;
++    readonly groups: EmbeddedCollection<CombatantGroup<this>>;
+ }
+ 
+ export interface CombatHistoryData {
+diff --git a/client/documents/combatant-group.d.mts b/client/documents/combatant-group.d.mts
+--- a/client/documents/combatant-group.d.mts
++++ b/client/documents/combatant-group.d.mts
+@@ -17,7 +17,7 @@ interface ClientBaseCombatantGroup<TParent extends Combat | null> extends Instan
+  */
+ export default class CombatantGroup<
+     TParent extends Combat | null = Combat | null,
+-> extends ClientBaseCombatantGroup<TParent | null> {
++> extends ClientBaseCombatantGroup<TParent> {
+     /**
+      * A group is considered defeated if all its members are defeated, or it has no members.
+      */

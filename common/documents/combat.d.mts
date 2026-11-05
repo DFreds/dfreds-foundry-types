@@ -1,6 +1,6 @@
 import { DatabaseUpdateCallbackOptions, Document, DocumentMetadata, EmbeddedCollection } from "../abstract/_module.mjs";
 import * as fields from "../data/fields.mjs";
-import { BaseCombatant, BaseScene, BaseUser } from "./_module.mjs";
+import { BaseCombatant, BaseCombatantGroup, BaseScene, BaseUser } from "./_module.mjs";
 
 /** The Combat document model. */
 export default class BaseCombat extends Document<null, CombatSchema> {
@@ -21,6 +21,7 @@ export default class BaseCombat extends Document<null, CombatSchema> {
 
 export default interface BaseCombat extends Document<null, CombatSchema>, fields.ModelPropsFromSchema<CombatSchema> {
     readonly combatants: EmbeddedCollection<BaseCombatant<this>>;
+    readonly groups: EmbeddedCollection<BaseCombatantGroup<this>>;
 
     get documentName(): CombatMetadata["name"];
 }
@@ -31,6 +32,7 @@ interface CombatMetadata extends DocumentMetadata {
     label: "DOCUMENT.Combat";
     embedded: {
         Combatant: "combatants";
+        CombatantGroup: "groups";
     };
     isPrimary: true;
 }
@@ -42,6 +44,8 @@ type CombatSchema = {
     scene: fields.ForeignDocumentField<BaseScene>;
     /** A Collection of Combatant embedded Documents */
     combatants: fields.EmbeddedCollectionField<BaseCombatant<BaseCombat>>;
+    /** A Collection of CombatantGroup embedded Documents */
+    groups: fields.EmbeddedCollectionField<BaseCombatantGroup<BaseCombat>>;
     /** Is the Combat encounter currently active? */
     active: fields.BooleanField;
     /** The current round of the Combat encounter */
