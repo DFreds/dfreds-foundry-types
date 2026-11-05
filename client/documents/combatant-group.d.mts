@@ -17,7 +17,7 @@ interface ClientBaseCombatantGroup<TParent extends Combat | null> extends Instan
  */
 export default class CombatantGroup<
     TParent extends Combat | null = Combat | null,
-> extends ClientBaseCombatantGroup<TParent | null> {
+> extends ClientBaseCombatantGroup<TParent> {
     /**
      * A group is considered defeated if all its members are defeated, or it has no members.
      */

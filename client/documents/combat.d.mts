@@ -10,7 +10,7 @@ import {
 import Document from "@common/abstract/document.mjs";
 import EmbeddedCollection from "@common/abstract/embedded-collection.mjs";
 import BaseCombat from "@common/documents/combat.mjs";
-import { Actor, Combatant, TokenDocument, User } from "./_module.mjs";
+import { Actor, Combatant, CombatantGroup, TokenDocument, User } from "./_module.mjs";
 import { CombatRoundEventContext, CombatTurnEventContext } from "./_types.mjs";
 import { ClientDocument, ClientDocumentStatic } from "./abstract/client-document.mjs";
 
@@ -379,6 +379,7 @@ export default class Combat extends ClientBaseCombat {
 
 export default interface Combat extends ClientBaseCombat {
     readonly combatants: EmbeddedCollection<Combatant<this>>;
+    readonly groups: EmbeddedCollection<CombatantGroup<this>>;
 }
 
 export interface CombatHistoryData {
