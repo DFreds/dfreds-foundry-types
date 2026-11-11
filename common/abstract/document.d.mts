@@ -160,8 +160,12 @@ export default abstract class Document<
      * @param context Additional options which customize the creation workflow
      * @param context.save   Save the clone to the World database?
      * @param context.keepId Keep the original Document ID? Otherwise the ID will become undefined
-     * @returns The cloned Document instance
+     * @returns The cloned Document instance, or a promise of the saved clone when `context.save` is true
      */
+    override clone(
+        data: Record<string, unknown> | undefined,
+        context: DocumentCloneContext & { save: true },
+    ): Promise<this | undefined>;
     override clone(data?: Record<string, unknown>, context?: DocumentCloneContext): this;
 
     /**

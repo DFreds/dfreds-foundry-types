@@ -133,6 +133,10 @@ export default class Scene extends ClientBaseScene {
      */
     unview(): Promise<void>;
 
+    override clone(
+        data: Record<string, unknown> | undefined,
+        context: DocumentCloneContext & { save: true },
+    ): Promise<this | undefined>;
     override clone(data?: Record<string, unknown>, context?: DocumentCloneContext): this;
 
     override reset(): void;

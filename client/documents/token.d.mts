@@ -219,6 +219,10 @@ export default class TokenDocument<TParent extends Scene | null = Scene | null> 
      */
     protected _prepareDetectionModes(): void;
 
+    override clone(
+        data: Record<string, unknown> | undefined,
+        context: DocumentCloneContext & { save: true },
+    ): Promise<this | undefined>;
     override clone(data?: Record<string, unknown>, context?: DocumentCloneContext): this;
 
     /**
